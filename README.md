@@ -29,7 +29,33 @@ Fargate allocates the right amount of compute, eliminating the need to choose in
 It is a good practice to consume the AWS managed service, if commercially viable, because this means that the responsibility for implementing best practice (the Well Architected Framework) lies with AWS rather than the customer.
 
 ```
-eksctl create cluster --name demo-flask --region ap-southeast-2 --fargate
+peters-mbp:deloitte $ eksctl create cluster --name demo-flask --region us-east-2 --fargate
+[ℹ]  eksctl version 0.13.0
+[ℹ]  using region us-east-2
+[ℹ]  setting availability zones to [us-east-2a us-east-2b us-east-2c]
+[ℹ]  subnets for us-east-2a - public:192.168.0.0/19 private:192.168.96.0/19
+[ℹ]  subnets for us-east-2b - public:192.168.32.0/19 private:192.168.128.0/19
+[ℹ]  subnets for us-east-2c - public:192.168.64.0/19 private:192.168.160.0/19
+[ℹ]  using Kubernetes version 1.14
+[ℹ]  creating EKS cluster "demo-flask" in "us-east-2" region with Fargate profile
+[ℹ]  if you encounter any issues, check CloudFormation console or try 'eksctl utils describe-stacks --region=us-east-2 --cluster=demo-flask'
+[ℹ]  CloudWatch logging will not be enabled for cluster "demo-flask" in "us-east-2"
+[ℹ]  you can enable it with 'eksctl utils update-cluster-logging --region=us-east-2 --cluster=demo-flask'
+[ℹ]  Kubernetes API endpoint access will use default of {publicAccess=true, privateAccess=false} for cluster "demo-flask" in "us-east-2"
+[ℹ]  1 task: { create cluster control plane "demo-flask" }
+[ℹ]  building cluster stack "eksctl-demo-flask-cluster"
+[ℹ]  deploying stack "eksctl-demo-flask-cluster"
+[✔]  all EKS cluster resources for "demo-flask" have been created
+[✔]  saved kubeconfig as "/Users/s66234/.kube/config"
+[ℹ]  creating Fargate profile "fp-default" on EKS cluster "demo-flask"
+[ℹ]  created Fargate profile "fp-default" on EKS cluster "demo-flask"
+[ℹ]  "coredns" is now schedulable onto Fargate
+[ℹ]  "coredns" is now scheduled onto Fargate
+[ℹ]  "coredns" pods are now scheduled onto Fargate
+[ℹ]  kubectl command should work with "/Users/s66234/.kube/config", try 'kubectl get nodes'
+[✔]  EKS cluster "demo-flask" in "us-east-2" region is ready
+peters-mbp:deloitte$ 
+
 ```
 
 
