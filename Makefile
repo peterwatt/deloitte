@@ -13,10 +13,6 @@ help: ## This help
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / \
 		{printf "\033[36m%-30s\033[0m  %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-acct:
-
-	aws cli describe-account
-
 cleanup: ## Tear down all components
 
 	aws cloudformation delete-stack --stack-name eksctl-demo-flask-addon-iamserviceaccount-kube-system-alb-ingress-controller
