@@ -5,9 +5,9 @@ Response to Deloitte Technical Exercise.
 ## To run the container
 
 ```
-docker run -d -p 80:80 peterwatt/flaskdemo
+docker run -d -p 5000:5000 peterwatt/flaskdemo
 
-curl http://127.0.0.1
+curl http://127.0.0.1:5000
 ```
 
 ## Container design
