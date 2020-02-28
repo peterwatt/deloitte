@@ -24,14 +24,37 @@ The Python code has been changed to respond on port 80.
 
 ## AWS execution platform
 
-*Fargate* has been selected as the Kubernetes container platform (see [here](https://aws.amazon.com/blogs/aws/amazon-eks-on-aws-fargate-now-generally-available/)).
+*AWS Fargate* has been selected as the Kubernetes container platform (see [here](https://aws.amazon.com/blogs/aws/amazon-eks-on-aws-fargate-now-generally-available/)).
+
+Fargate is a managed compute engine for Amazon ECS that can run containers. In Fargate you don’t need to manage servers or clusters.
 
 Fargate allocates the right amount of compute, eliminating the need to choose instances and scale cluster capacity. You only pay for the resources required to run your containers, so there is no over-provisioning and paying for additional servers. Fargate runs each task or pod in its own kernel providing the tasks and pods their own isolated compute environment. This enables your application to have workload isolation and improved security by design.
 
 It is a good practice to consume the AWS managed service, if commercially viable, because this means that the responsibility for implementing best practice (the Well Architected Framework) lies with AWS rather than the customer.
 
+### Characteristcs of the platform
+
+* Implements three pods across three availability zones for fault tolerance
+
+### Building the platform
+
+A [Makefile](Makefile) is provided.
+
+Issue the following command:
+
 ```
-eksctl create cluster --name demo-flask --region us-east-2 --fargate
+make build
+```
+### Cleaning up the platform
+
+Issue the following command:
+
+```
+make cleanup
+```
+
+### Sample output
+```
 [ℹ]  eksctl version 0.13.0
 [ℹ]  using region us-east-2
 [ℹ]  setting availability zones to [us-east-2a us-east-2b us-east-2c]
@@ -56,30 +79,16 @@ eksctl create cluster --name demo-flask --region us-east-2 --fargate
 [ℹ]  "coredns" pods are now scheduled onto Fargate
 [ℹ]  kubectl command should work with "/Users/s66234/.kube/config", try 'kubectl get nodes'
 [✔]  EKS cluster "demo-flask" in "us-east-2" region is ready
-peters-mbp:deloitte$ 
 
-eksctl utils associate-iam-oidc-provider --region us-east-2 --cluster demo-flask --approve
-aws iam create-policy \
-    --policy-name ALBIngressControllerIAMPolicy \
-    --policy-document https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json
-    
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml
-    
-    eksctl create iamserviceaccount \
-    --region us-east-2 \
-    --name alb-ingress-controller \
-    --namespace kube-system \
-    --cluster demo-flask \
-    --attach-policy-arn arn:aws:iam::805770983322:policy/ALBIngressControllerIAMPolicy \
-    --override-existing-serviceaccounts \
-    --approve
 ```
 
+### Exposing the service
 
+Amazon EKS doesn't support the Network Load Balancer and Classic Load Balancer for pods running on AWS Fargate. For Fargate ingress, it's a best practice to use the [ALB Ingress Controller](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html) on Amazon EKS.
 
 ## Kuberbetes deployment resources
 
-The service is decribed in YAML in [flask.yaml](flask.yaml).
+The service is described in YAML in [flask.yaml](flask.yaml).
 
 The command to build the service is:
 
