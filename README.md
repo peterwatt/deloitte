@@ -34,9 +34,11 @@ It is a good practice to consume the AWS managed service, if commercially viable
 
 ### Characteristcs of the platform
 
+The value proposition for AWS Fargate:
+
 * Serverless platform (described here: https://pages.awscloud.com/fargate-serverless-architecture.html)
 
-* Implements three pods across three availability zones for fault tolerance
+* Implements three Flask application pods across three availability zones for fault tolerance
 
 ### Building the platform
 
@@ -89,6 +91,8 @@ make cleanup
 ### Exposing the service
 
 Amazon EKS doesn't support the Network Load Balancer and Classic Load Balancer for pods running on AWS Fargate. For Fargate ingress, it's a best practice to use the [ALB Ingress Controller](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html) on Amazon EKS.
+
+Futher details [here](https://aws.amazon.com/blogs/containers/using-alb-ingress-controller-with-amazon-eks-on-fargate/).
 
 The Makefile implements the ALB Ingress Controller, but there is one manual step to be performed. Open the ALB Ingress Controller deployment manifest for editing with the following command.
 
