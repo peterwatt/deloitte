@@ -30,7 +30,7 @@ Fargate allocates the right amount of compute, eliminating the need to choose in
 
 It is a good practice to consume the AWS managed service, if commercially viable, because this means that the responsibility for implementing best practice (the Well Architected Framework) lies with AWS rather than the customer.
 
-### Characteristcs of the platform
+### Characteristics of the platform
 
 The value proposition for AWS Fargate:
 
