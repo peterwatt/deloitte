@@ -20,7 +20,7 @@ This image is based on the popular Alpine Linux project, available in the alpine
 
 The Python code has been changed to bind to 0.0.0.0 (see [here](https://stackoverflow.com/questions/30323224/deploying-a-minimal-flask-app-in-docker-server-connection-issues)). 
 
-The Python code has been changed to respond on port 80.
+The Python code has been changed to respond on port 80, to eliminate one possible source of confusion.
 
 ## AWS execution platform
 
@@ -75,7 +75,7 @@ make cleanup
 [ℹ]  building cluster stack "eksctl-demo-flask-cluster"
 [ℹ]  deploying stack "eksctl-demo-flask-cluster"
 [✔]  all EKS cluster resources for "demo-flask" have been created
-[✔]  saved kubeconfig as "/Users/s66234/.kube/config"
+[✔]  saved kubeconfig as "/Users/peterwatt/.kube/config"
 [ℹ]  creating Fargate profile "fp-default" on EKS cluster "demo-flask"
 [ℹ]  created Fargate profile "fp-default" on EKS cluster "demo-flask"
 [ℹ]  "coredns" is now schedulable onto Fargate
@@ -90,6 +90,24 @@ make cleanup
 
 Amazon EKS doesn't support the Network Load Balancer and Classic Load Balancer for pods running on AWS Fargate. For Fargate ingress, it's a best practice to use the [ALB Ingress Controller](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html) on Amazon EKS.
 
+The Makefile implements the ALB Ingress Controller, but there is one manual step to be performed. Open the ALB Ingress Controller deployment manifest for editing with the following command.
+
+```
+kubectl edit deployment.apps/alb-ingress-controller -n kube-system
+```
+
+Add a line for the cluster name, the VPC ID, and AWS Region name after the `--ingress-class=alb` line. Once you've added the appropriate lines, save and close the file.
+
+```
+    spec:
+      containers:
+      - args:
+        - --ingress-class=alb
+        - --cluster-name=demo-flask
+        - --aws-vpc-id=vpc-1111111111111111
+        - --aws-region=us-east-2
+```
+
 ## Kuberbetes deployment resources
 
 The service is described in YAML in [flask.yaml](flask.yaml).
@@ -97,5 +115,5 @@ The service is described in YAML in [flask.yaml](flask.yaml).
 The command to build the service is:
 
 ```
-kubectl build -f flask.yaml
+kubectl apply -f flask.yaml
 ```
