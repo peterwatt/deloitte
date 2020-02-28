@@ -12,7 +12,7 @@ curl http://127.0.0.1:5000
 
 ## Container design
 
-Since Docker Hub doesn’t have an official Flask repository, I built my own. While you can always use a non-official image, it’s generally recommended to make your own Dockerfile to ensure you know what is in the image. 
+Since Docker Hub doesn’t have an official Flask image, I built my own. While you can always use a non-official image, it’s generally recommended to make your own Dockerfile to ensure you know what is in the image. 
 
 I am using the Docker Official image [python:alpine](https://hub.docker.com/_/python).
 
