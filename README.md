@@ -5,9 +5,9 @@ Response to Deloitte Technical Exercise.
 ## To run the container
 
 ```
-docker run -d -p 5000:5000 peterwatt/flaskdemo
+docker run -d -p 80:80 peterwatt/flaskdemo
 
-curl http://127.0.0.1:5000
+curl http://127.0.0.1
 ```
 
 ## Container design
@@ -19,6 +19,8 @@ I am using the Docker Official image [python:alpine](https://hub.docker.com/_/py
 This image is based on the popular Alpine Linux project, available in the alpine official image. Alpine Linux is much smaller than most distribution base images (~5MB), and thus leads to much slimmer images in general. This base image is safe because it is the official image mantained by the Docker community.
 
 The Python code has been changed to bind to 0.0.0.0 (see [here](https://stackoverflow.com/questions/30323224/deploying-a-minimal-flask-app-in-docker-server-connection-issues)). 
+
+The Python code has been changed to respond on port 80.
 
 ## AWS execution platform
 
@@ -77,4 +79,10 @@ aws iam create-policy \
 
 ## Kuberbetes deployment resources
 
+The service is decribed in YAML in [flask.yaml](flask.yaml).
 
+The command to build the service is:
+
+```
+kubectl build -f flask.yaml
+```
