@@ -119,3 +119,12 @@ The command to build the service is:
 ```
 kubectl apply -f flask.yaml
 ```
+
+### To test the service
+
+Get the DNS name of the load balancer:
+
+```
+kubectl get ingress
+```
+The load balancer will respond on port 80.
