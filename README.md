@@ -34,15 +34,19 @@ It is a good practice to consume the AWS managed service, if commercially viable
 
 ### Characteristcs of the platform
 
+* Serverless platform (described here: https://pages.awscloud.com/fargate-serverless-architecture.html)
+
 * Implements three pods across three availability zones for fault tolerance
 
 ### Building the platform
 
 A [Makefile](Makefile) is provided.
 
-Issue the following command:
+Issue the following commands:
 
 ```
+aws configure set default.region us-east-2
+
 make build
 ```
 ### Cleaning up the platform
