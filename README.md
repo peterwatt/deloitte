@@ -29,7 +29,7 @@ Fargate allocates the right amount of compute, eliminating the need to choose in
 It is a good practice to consume the AWS managed service, if commercially viable, because this means that the responsibility for implementing best practice (the Well Architected Framework) lies with AWS rather than the customer.
 
 ```
-peters-mbp:deloitte $ eksctl create cluster --name demo-flask --region us-east-2 --fargate
+eksctl create cluster --name demo-flask --region us-east-2 --fargate
 [ℹ]  eksctl version 0.13.0
 [ℹ]  using region us-east-2
 [ℹ]  setting availability zones to [us-east-2a us-east-2b us-east-2c]
@@ -56,6 +56,21 @@ peters-mbp:deloitte $ eksctl create cluster --name demo-flask --region us-east-2
 [✔]  EKS cluster "demo-flask" in "us-east-2" region is ready
 peters-mbp:deloitte$ 
 
+eksctl utils associate-iam-oidc-provider --region us-east-2 --cluster demo-flask --approve
+aws iam create-policy \
+    --policy-name ALBIngressControllerIAMPolicy \
+    --policy-document https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/iam-policy.json
+    
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/aws-alb-ingress-controller/v1.1.4/docs/examples/rbac-role.yaml
+    
+    eksctl create iamserviceaccount \
+    --region us-east-2 \
+    --name alb-ingress-controller \
+    --namespace kube-system \
+    --cluster demo-flask \
+    --attach-policy-arn arn:aws:iam::805770983322:policy/ALBIngressControllerIAMPolicy \
+    --override-existing-serviceaccounts \
+    --approve
 ```
 
 
