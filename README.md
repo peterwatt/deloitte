@@ -49,13 +49,6 @@ aws configure set default.region us-east-2
 
 make build
 ```
-### Cleaning up the platform
-
-Issue the following command:
-
-```
-make cleanup
-```
 
 ### Sample output
 ```
@@ -128,3 +121,11 @@ Get the DNS name of the load balancer:
 kubectl get ingress
 ```
 The load balancer will respond on port 80.
+
+### Cleaning up the platform
+
+Issue the following command:
+
+```
+make cleanup
+```
