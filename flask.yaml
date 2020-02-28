@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: flask
+  name: flask
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      run: flask
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        run: flask
+    spec:
+      containers:
+      - image: peterwatt/flaskdemo
+        name: flask
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask
+spec:
+  type: NodePort
+  selector:
+    app: flask
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: flask
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: flask
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: flask
+              servicePort: 80
