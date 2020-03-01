@@ -24,6 +24,8 @@ The Python code has been changed to bind to 0.0.0.0 (see [here](https://stackove
 
 *AWS Fargate* has been selected as the Kubernetes container platform (see [here](https://aws.amazon.com/blogs/aws/amazon-eks-on-aws-fargate-now-generally-available/)).
 
+![](https://d1.awsstatic.com/re19/FargateonEKS/Product-Page-Diagram_Fargate@2x.a20fb2b15c2aebeda3a44dbbb0b10b82fb89aa6a.png)
+
 Fargate is a managed compute engine for Amazon ECS that can run containers. In Fargate you don’t need to manage servers or clusters.
 
 Fargate allocates the right amount of compute, eliminating the need to choose instances and scale cluster capacity. You only pay for the resources required to run your containers, so there is no over-provisioning and paying for additional servers. Fargate runs each task or pod in its own kernel providing the tasks and pods their own isolated compute environment. This enables your application to have workload isolation and improved security by design.
@@ -34,9 +36,20 @@ It is a good practice to consume the AWS managed service, if commercially viable
 
 The value proposition for AWS Fargate:
 
-* Serverless platform (described here: https://pages.awscloud.com/fargate-serverless-architecture.html)
+* Serverless platform (described here: https://pages.awscloud.com/fargate-serverless-architecture.html). No need for customer to provision or manage or patch EC2 instances. EC2 instances are not visible to customer.
 
-* Implements three Flask application pods across three availability zones for fault tolerance
+* Defense in depth with strong container isolation, dedicate customer ENIs, prebuilt security groups, least privilege permissions.
+
+![](https://pbs.twimg.com/media/ELCdijCVUAANSeB.jpg)
+
+* Fargate implements high availability for your application across multiple availability zones, and automatically scales to demand.
+
+* The application executes in private subnets that can only be reached by the mutlt-AZ load balancer.
+![](https://d2908q01vomqb2.cloudfront.net/1b6453892473a467d07372d45eb05abc2031647a/2018/01/26/Slide5-1024x647.png)
+
+* Fargate handles logging and metric collection.
+
+* Focus on cost efficiency as underlying fleet is optimised to your workload.
 
 ### Building the platform
 
@@ -104,6 +117,8 @@ Add a line for the cluster name, the VPC ID, and AWS Region name after the `--in
 ```
 
 ## Kuberbetes deployment resources
+
+In this example we are consuming Fargate using Kubernetes constructs, not Fargate contructs. The service implements three Flask application pods across three availability zones for fault tolerance.
 
 The service is described in YAML in [flask.yaml](flask.yaml).
 
